@@ -77,7 +77,5 @@ export async function createReservation(reservation, signal) {
     signal,
   };
 
-  return await fetchJson(url, options)
-    .then(formatReservationDate)
-    .then(formatReservationTime);
+  return await fetchJson(url, options, reservation)
 }
