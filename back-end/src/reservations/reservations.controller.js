@@ -44,11 +44,26 @@ function propertyIsNotEmpty(propertyName) {
 
 function reservationDateIsValid() {
   return function (req, res, next) {
-  const reservationDate = new Date(req.body.reservation_date);
+    const dateFormat = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
 
-    if (isNaN(reservationDate.getTime())) {
-      return res.status(400).json({ error: 'Invalid reservation_date format' });
-    }
+    if (!reservation_date.match(dateFormat)) {
+      return next({
+        status: 400,
+        message: `reservation_date is invalid`,
+      });
+  }
+  next();
+}
+}
+
+function reservationTimeIsValid() {
+  const timeFormat = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+
+  if(!reservation_time.match(timeFormat)) {
+    return next({
+      status: 400,
+      message: `reservation_time is invalid`
+    }),
     next();
   }
 }
@@ -63,6 +78,7 @@ module.exports = {
     bodyDataHas("reservation_time"),
     bodyDataHas("people"),
     reservationDateIsValid,
+    reservationTimeIsValid,
     propertyIsNotEmpty("first_name"),
     propertyIsNotEmpty("last_name"),
     propertyIsNotEmpty("reservation_date"),
