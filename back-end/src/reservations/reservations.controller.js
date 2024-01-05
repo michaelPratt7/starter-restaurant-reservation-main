@@ -42,30 +42,41 @@ function propertyIsNotEmpty(propertyName) {
   };
 }
 
-function reservationDateIsValid() {
-  return function (req, res, next) {
-    const dateFormat = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
+function reservationDateIsValid(req, res, next) {
+  const dateFormat = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
+  const {reservation_date} = req.body.data;
 
-    if (!reservation_date.match(dateFormat)) {
-      return next({
-        status: 400,
-        message: `reservation_date is invalid`,
-      });
-  }
-  next();
+  if (!reservation_date.match(dateFormat)) {
+    return next({
+      status: 400,
+      message: `reservation_date is invalid`,
+    });
 }
+next();
 }
 
-function reservationTimeIsValid() {
+function reservationTimeIsValid(req, res, next) {
   const timeFormat = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+  const {reservation_time} = req.body.data;
 
   if(!reservation_time.match(timeFormat)) {
     return next({
       status: 400,
       message: `reservation_time is invalid`
-    }),
-    next();
+    });
   }
+  next();
+}
+
+function peopleIsValidNumber(req, res, next) {
+  const { data: { people }  = {} } = req.body;
+    if (people <= 0 || !Number.isInteger(people)) {
+        return next({
+            status: 400,
+            message: "Reservation must have a people value that is an integer greater than 0"
+        });
+    }
+    next();
 }
 
 module.exports = {
@@ -79,6 +90,7 @@ module.exports = {
     bodyDataHas("people"),
     reservationDateIsValid,
     reservationTimeIsValid,
+    peopleIsValidNumber,
     propertyIsNotEmpty("first_name"),
     propertyIsNotEmpty("last_name"),
     propertyIsNotEmpty("reservation_date"),
