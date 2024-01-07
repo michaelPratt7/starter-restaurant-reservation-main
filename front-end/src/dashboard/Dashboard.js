@@ -9,7 +9,8 @@ import ErrorAlert from "../layout/ErrorAlert";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+function Dashboard({ date: initialDate }) {
+  const [date, setDate] = useState(initialDate);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
@@ -31,21 +32,23 @@ function Dashboard({ date }) {
     switch (action) {
       case "previous":
         newDate = new Date(date);
-        newDate.setDate(date.getDate() - 1);
+        newDate.setDate(newDate.getDate() - 1);
         break;
       case "today":
-        newDate = new Date(date);
+        newDate = new Date();
         break;
       case "next":
         newDate = new Date(date);
-        newDate.setDate(date.getDate() + 1);
+        newDate.setDate(newDate.getDate() + 1);
         break;
       default:
         break;
     }
 
-    history.push(`/dashboard?date=${newDate}`);
+    setDate(newDate);
+    history.push(`/dashboard?date=${newDate.toISOString().split('T')[0]}`);
   };
+
 
   return (
     <main>
