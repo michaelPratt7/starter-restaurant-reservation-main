@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
@@ -29,14 +29,14 @@ function Dashboard({ date }) {
     let newDate;
 
     switch (action) {
-      case 'previous':
+      case "previous":
         newDate = new Date(date);
         newDate.setDate(date.getDate() - 1);
         break;
-      case 'today':
+      case "today":
         newDate = new Date(date);
         break;
-      case 'next':
+      case "next":
         newDate = new Date(date);
         newDate.setDate(date.getDate() + 1);
         break;
@@ -54,14 +54,14 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <div>
-        <button onClick={() => handleButtonClick('previous')}>Previous</button>
-        <button onClick={() => handleButtonClick('today')}>Today</button>
-        <button onClick={() => handleButtonClick('next')}>Next</button>
+        <button onClick={() => handleButtonClick("previous")}>Previous</button>
+        <button onClick={() => handleButtonClick("today")}>Today</button>
+        <button onClick={() => handleButtonClick("next")}>Next</button>
       </div>
       <ErrorAlert error={reservationsError} />
       {reservations.map((reservation) => (
-        <div key={reservation.id}>
-          <p>{reservation.time}</p>
+        <div>
+          <p>{reservation.time}{reservation.last_name}</p>
         </div>
       ))}
     </main>
