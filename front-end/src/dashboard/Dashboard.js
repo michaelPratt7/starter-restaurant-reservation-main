@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous } from "../utils/date-time";
+import { useQuery } from "../utils/useQuery";
 
 /**
  * Defines the dashboard page.
@@ -11,10 +12,12 @@ import { today, next, previous } from "../utils/date-time";
  * @returns {JSX.Element}
  */
 function Dashboard() {
-  const [date, setDate] = useState(today());
+  const query = useQuery();
+  const [date, setDate] = useState(query.get("date") || today());
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
+  
 
   useEffect(loadDashboard, [date]);
 
