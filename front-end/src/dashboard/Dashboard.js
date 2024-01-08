@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous } from "../utils/date-time";
-import { useQuery } from "../utils/useQuery";
+import useQuery from "../utils/useQuery";
 
 /**
  * Defines the dashboard page.
