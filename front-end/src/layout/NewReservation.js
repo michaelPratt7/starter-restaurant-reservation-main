@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 
 function NewReservation() {
@@ -16,6 +17,7 @@ function NewReservation() {
    }
    
    const [reservation, setReservation] = useState(initialFormState);
+   const [reservationError, setReservationError] = useState([]);
 
    function changeHandler(event) {
     setReservation({
@@ -33,6 +35,18 @@ function NewReservation() {
 
    function submitHandler(event) {
     event.preventDefault();
+    const selectedDate = reservation.reservation_date;
+    const currentDate = new Date();
+    const newErrors = [];
+        if (selectedDate.getDay() === 2) {
+        newErrors.push("Reservations cannot be made on Tuesdays."); 
+    }
+    
+       if (selectedDate < currentDate) {
+        newErrors.push("Reservations cannot be made for past dates."); 
+    }
+    setReservationError(newErrors)
+    if (newErrors.length > 0) return;
     createReservation(reservation).then(() =>
     history.push(`/dashboard?date=${reservation.reservation_date}`))
     setReservation({initialFormState})
@@ -106,18 +120,13 @@ function NewReservation() {
                 </td>
             </table>
             <div className="flex pt-2">
-            <button type="button" onClick={() => history.goBack()}>
-      Cancel
-    </button>
-    <button type="submit">Submit</button>
-            </div>
-        </form>
-    </main>
-
-   
-   
-   );
-
+            <ErrorAlert error={reservationError} />
+        <button type="button" onClick={() => history.goBack()}>Cancel</button>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+</main>
+);
 }
 
 export default NewReservation;
