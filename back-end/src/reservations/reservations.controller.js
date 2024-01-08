@@ -45,8 +45,11 @@ function propertyIsNotEmpty(propertyName) {
 function reservationDateIsValid(req, res, next) {
   const dateFormat = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
   const {reservation_date} = req.body.data;
+  const currentDate = new Date();
 
-  if (!reservation_date.match(dateFormat)) {
+  if (!reservation_date.match(dateFormat) 
+        || reservation_date.getDay() === 2 
+        || reservation_date < currentDate ) {
     return next({
       status: 400,
       message: `reservation_date is invalid`,
