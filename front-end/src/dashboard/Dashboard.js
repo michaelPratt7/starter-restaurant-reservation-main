@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { today, next, previous } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
@@ -9,8 +10,8 @@ import ErrorAlert from "../layout/ErrorAlert";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
-  const [newDate, setNewDate] = useState(date);
+function Dashboard() {
+  const [date, setDate] = useState(today());
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
@@ -31,21 +32,21 @@ function Dashboard({ date }) {
 
     switch (action) {
       case "previous":
-        updatedDate = new Date(newDate);
+        updatedDate = new Date(date);
         updatedDate.setDate(updatedDate.getDate() - 1);
         break;
       case "today":
         updatedDate = new Date();
         break;
       case "next":
-        updatedDate = new Date(newDate);
+        updatedDate = new Date(date);
         updatedDate.setDate(updatedDate.getDate() + 1);
         break;
       default:
         break;
     }
 
-    setNewDate(updatedDate);
+    setDate(updatedDate);
     history.push(`/dashboard?date=${updatedDate.toISOString().split('T')[0]}`);
   };
 
@@ -64,7 +65,7 @@ function Dashboard({ date }) {
       <ErrorAlert error={reservationsError} />
       {reservations.map((reservation) => (
         <div>
-          <p>{reservation.time}{reservation.last_name}</p>
+          <p>{reservation.reservation_time}{reservation.last_name}</p>
         </div>
       ))}
     </main>

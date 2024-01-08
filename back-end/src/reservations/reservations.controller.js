@@ -24,7 +24,7 @@ function bodyDataHas(propertyName) {
     }
     next({
       status: 400,
-      message: `Order must include a ${propertyName}` 
+      message: `Reservation must include a ${propertyName}` 
   });
   };
 }
@@ -35,7 +35,7 @@ function propertyIsNotEmpty(propertyName) {
   if (data[propertyName] == "") {
       return next ({
           status: 400,
-          message: `Order must include a ${propertyName}`
+          message: `Reservation must include a ${propertyName}`
       })
   };
   next();

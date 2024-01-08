@@ -12,7 +12,7 @@ function NewReservation() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "",
+    people: 0,
    }
    
    const [reservation, setReservation] = useState(initialFormState);
@@ -21,6 +21,13 @@ function NewReservation() {
     setReservation({
         ...reservation,
         [event.target.name]: event.target.value
+    })
+   }
+
+   function numberChangeHandler(event) {
+    setReservation({
+        ...reservation,
+        [event.target.name]: Number(event.target.value)
     })
    }
 
@@ -93,7 +100,7 @@ function NewReservation() {
                     name="people"
                     type="text"
                     style={{width: 30}}
-                    onChange={changeHandler}
+                    onChange={numberChangeHandler}
                     value={reservation.people}
                     />
                 </td>
