@@ -28,26 +28,23 @@ function Dashboard() {
   }
 
   const handleButtonClick = (action) => {
-    let updatedDate;
 
     switch (action) {
       case "previous":
-        updatedDate = new Date(date);
-        updatedDate.setDate(updatedDate.getDate() - 1);
+        setDate(previous(date))
+        history.push(`dashboard?date=${previous(date)}`)
         break;
       case "today":
-        updatedDate = new Date();
+        setDate(today())
+        history.push(`dashboard?date=${today()}`)
         break;
       case "next":
-        updatedDate = new Date(date);
-        updatedDate.setDate(updatedDate.getDate() + 1);
+        setDate(next(date))
+        history.push(`dashboard?date=${next(date)}`)
         break;
       default:
         break;
     }
-
-    setDate(updatedDate);
-    history.push(`/dashboard?date=${updatedDate.toISOString().split('T')[0]}`);
   };
 
 
@@ -65,7 +62,7 @@ function Dashboard() {
       <ErrorAlert error={reservationsError} />
       {reservations.map((reservation) => (
         <div>
-          <p>{reservation.reservation_time}{reservation.last_name}</p>
+          <p>{reservation.reservation_time} | {reservation.last_name}</p>
         </div>
       ))}
     </main>
