@@ -45,17 +45,40 @@ function propertyIsNotEmpty(propertyName) {
 function reservationDateIsValid(req, res, next) {
   const dateFormat = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
   const {reservation_date} = req.body.data;
-  const currentDate = new Date();
 
-  if (!reservation_date.match(dateFormat) 
-        || reservation_date.getDay() === 2 
-        || reservation_date < currentDate ) {
+  if (!reservation_date.match(dateFormat)) {
     return next({
       status: 400,
       message: `reservation_date is invalid`,
     });
 }
 next();
+}
+
+function resDateIsInFuture(req, res, next) {
+  const {reservation_date} = req.body.data;
+  const currentDate = new Date();
+
+  if (reservation_date < currentDate) {
+    return next ({
+      status: 400,
+      message: `reservation date has to be in the future`
+    });
+  };
+  next();
+}
+
+function resDateisOnTues(req, res, next) {
+  const {reservation_date} = req.body.data;
+  const selectedDate = new Date(reservation_date);
+
+  if (selectedDate.getDay() === 2) {
+    return next ({
+      status: 400,
+      message: `reservation date can't be made on a day restaurant is closed`
+    });
+  };
+  next();
 }
 
 function reservationTimeIsValid(req, res, next) {
@@ -92,6 +115,8 @@ module.exports = {
     bodyDataHas("reservation_time"),
     bodyDataHas("people"),
     reservationDateIsValid,
+    resDateIsInFuture,
+    resDateisOnTues,
     reservationTimeIsValid,
     peopleIsValidNumber,
     propertyIsNotEmpty("first_name"),

@@ -38,12 +38,11 @@ function NewReservation() {
     const selectedDate = reservation.reservation_date;
     const currentDate = new Date();
     const newErrors = [];
+        if (selectedDate < currentDate) {
+        newErrors.push("Reservations cannot be made for past dates."); 
+    }
         if (selectedDate.getDay() === 2) {
         newErrors.push("Reservations cannot be made on Tuesdays."); 
-    }
-    
-       if (selectedDate < currentDate) {
-        newErrors.push("Reservations cannot be made for past dates."); 
     }
     setReservationError(newErrors)
     if (newErrors.length > 0) return;
