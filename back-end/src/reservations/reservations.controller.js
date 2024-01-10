@@ -94,6 +94,21 @@ function reservationTimeIsValid(req, res, next) {
   next();
 }
 
+function resTimeDuringBusiness(req, res, next) {
+  const {reservation_time} = req.body.data;
+  const resTime = new Date(`2000-01-01T${reservation_time}`)
+  const openingTime = new Date(`2000-01-01T10:30:00`);
+  const closingTime = new Date(`2000-01-01T21:30:00`);
+
+  if (resTime < openingTime || resTime > closingTime) {
+    return next({
+      status: 400,
+      message: `reservation time must be within business hours`
+    })
+  }
+  next();
+}
+
 function peopleIsValidNumber(req, res, next) {
   const { data: { people }  = {} } = req.body;
     if (people <= 0 || !Number.isInteger(people)) {
@@ -118,6 +133,7 @@ module.exports = {
     resDateIsInFuture,
     resDateisOnTues,
     reservationTimeIsValid,
+    resTimeDuringBusiness,
     peopleIsValidNumber,
     propertyIsNotEmpty("first_name"),
     propertyIsNotEmpty("last_name"),

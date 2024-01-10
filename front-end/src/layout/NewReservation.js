@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import {formatAsDate} from "../utils/date-time";
 
 
 function NewReservation() {
@@ -41,7 +42,7 @@ function NewReservation() {
     
     try {
         const response = await createReservation(reservation, abortController.signal);
-        history.push(`/dashboard?date=${response.reservation_date}`)
+        history.push(`/dashboard?date=${formatAsDate(response.reservation_date)}`)
     }
     catch(error) {
         if (error.name !== "AbortError") {

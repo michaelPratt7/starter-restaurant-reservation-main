@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { today, next, previous } from "../utils/date-time";
+import { today, next, previous, formatAsTime } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 
 /**
@@ -65,7 +65,7 @@ function Dashboard() {
       <ErrorAlert error={reservationsError} />
       {reservations.map((reservation) => (
         <div>
-          <p>{reservation.reservation_time} | {reservation.last_name}</p>
+          <p>{formatAsTime(reservation.reservation_time)} | {reservation.last_name}</p>
         </div>
       ))}
     </main>
