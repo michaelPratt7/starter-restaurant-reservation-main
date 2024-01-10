@@ -16,8 +16,8 @@ function NewReservation() {
     people: 0,
    }
    
-   const [reservation, setReservation] = useState(initialFormState);
-   const [reservationError, setReservationError] = useState([]);
+   const [reservation, setReservation] = useState({...initialFormState});
+   const [reservationError, setReservationError] = useState(null);
 
    function changeHandler(event) {
     setReservation({
@@ -33,22 +33,22 @@ function NewReservation() {
     })
    }
 
-   function submitHandler(event) {
+   async function submitHandler(event) {
     event.preventDefault();
-    const selectedDate = reservation.reservation_date;
-    const currentDate = new Date();
-    const newErrors = [];
-        if (selectedDate < currentDate) {
-        newErrors.push("Reservations cannot be made for past dates."); 
+    setReservationError(null);
+    const abortController = new AbortController();
+    //reservation.people = Number(reservation.people);
+    
+    try {
+        const response = await createReservation(reservation, abortController.signal);
+        history.push(`/dashboard?date=${response.reservation_date}`)
     }
-        if (selectedDate.getDay() === 2) {
-        newErrors.push("Reservations cannot be made on Tuesdays."); 
+    catch(error) {
+        if (error.name !== "AbortError") {
+            setReservationError(error)
+        }
     }
-    setReservationError(newErrors)
-    if (newErrors.length > 0) return;
-    createReservation(reservation).then(() =>
-    history.push(`/dashboard?date=${reservation.reservation_date}`))
-    setReservation({initialFormState})
+    return () => abortController.abort();
    }
 
 
