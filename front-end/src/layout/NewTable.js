@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
+import {createTable} from "../utils/api"
 import ErrorAlert from "../layout/ErrorAlert";
 
 function NewTable() {
@@ -30,8 +31,20 @@ function NewTable() {
        async function submitHandler(event) {
         event.preventDefault();
         setTableError(null);
-        history.push(`/dashboard`)
+        const abortController = new AbortController();
+
+        try {
+            await createTable(table, abortController.signal).then(() => 
+            history.push(`/dashboard`))
+        }
+        catch(error) {
+            if (error.name !== "AbortError") {
+                setTableError(error)
+            }
+        }
+        return () => abortController.abort();
        }
+
 
     return (
         <main>
