@@ -7,10 +7,10 @@ function list(date) {
         .select("*");
 }
 
-function create(reservation) {
-    return knex("reservations")
-      .insert(reservation, "*")
-      .then((CreateReservations) => CreateReservations[0]);
+async function create(reservation) {
+    const CreateReservations = await knex("reservations")
+        .insert(reservation, "*");
+        return CreateReservations[0];
 }
 
 module.exports = {
