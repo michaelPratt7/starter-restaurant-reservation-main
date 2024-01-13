@@ -35,7 +35,7 @@ function propertyIsNotEmpty(propertyName) {
   if (data[propertyName] == "") {
       return next ({
           status: 400,
-          message: `Reservation must include a ${propertyName}`
+          message: `${propertyName} variable of a reservation must not be empty`
       })
   };
   next();
