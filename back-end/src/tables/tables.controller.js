@@ -1,6 +1,10 @@
 const service = require ("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+async function list(req, res) {
+  res.json({data: await service.list()});
+}
+
 function create(req, res) {
     service
       .create(req.body.data)
@@ -57,6 +61,7 @@ function create(req, res) {
 
 
 module.exports = {
+    list: [asyncErrorBoundary(list)],
     create: [
       bodyDataHas("table_name"),
       bodyDataHas("capacity"),
