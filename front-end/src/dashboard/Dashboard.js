@@ -86,6 +86,9 @@ function Dashboard() {
           ))}
         </div>
         <div class="col-md-6">
+        <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Tables</h4>
+          </div>
           {tables.map((table) => (
             <div>
             <p>{table.table_name}</p>
