@@ -120,6 +120,26 @@ function peopleIsValidNumber(req, res, next) {
     next();
 }
 
+async function reservationExists(req, res, next) {
+  const {reservationId} = req.params;
+  const reservation = await service.read({reservationId});
+  if(reservation) {
+      res.locals.reservation = reservation;
+      return next();
+  }
+  return next({
+      status: 404,
+      message: "Reservation cannot be found",
+  });
+}
+
+async function read(req, res, next) {
+  const {reservation: data} = res.locals;
+  res.json({data});
+}
+
+
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -142,5 +162,6 @@ module.exports = {
     propertyIsNotEmpty("people"),
     asyncErrorBoundary(create),
   ],
+  read: [reservationExists, asyncErrorBoundary(read)]
 
 };
