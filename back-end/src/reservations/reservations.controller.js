@@ -122,7 +122,8 @@ function peopleIsValidNumber(req, res, next) {
 
 async function reservationExists(req, res, next) {
   const {reservationId} = req.params;
-  const reservation = await service.read({reservationId});
+  const parsedReservationId = parseInt(reservationId, 10);
+  const reservation = await service.read(parsedReservationId);
   if(reservation) {
       res.locals.reservation = reservation;
       return next();

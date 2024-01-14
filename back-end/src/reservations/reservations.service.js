@@ -13,10 +13,10 @@ async function create(reservation) {
         return CreateReservations[0];
 }
 
-function read(reservationId) {
+async function read(reservationId) {
     return knex("reservations")
         .select("*")
-        .where({"reservation_id": reservationId})
+        .where("reservation_id", reservationId)
         .first()
 }
 
