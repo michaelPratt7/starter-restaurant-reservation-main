@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import { listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -66,11 +66,11 @@ function Dashboard() {
 
   return (
     <main>
-      <h1 className="text-center">Dashboard</h1>
+      <h1 className="mb-3">Dashboard</h1>
       <div className="container">
         <div className="row">
         <div className="col-md-6"> 
-          <div className="d-md-flex mb-3">
+          <div className="d-md-flex mb-1">
             <h4 className="mb-0">Reservations for date</h4>
           </div>
           <div>
@@ -80,8 +80,9 @@ function Dashboard() {
           </div>
           <ErrorAlert error={reservationsError} />
           {reservations.map((reservation) => (
-            <div>
-              <p>{formatAsTime(reservation.reservation_time)} | {reservation.last_name}</p>
+            <div className="flex row mt-5">
+              <p className="mr-3">{formatAsTime(reservation.reservation_time)} | {reservation.last_name}</p>
+              <Link to= {`/reservations/${reservation.reservation_id}/seat`}><button>Seat</button></Link>
             </div>
           ))}
         </div>
@@ -90,8 +91,9 @@ function Dashboard() {
             <h4 className="mb-0">Tables</h4>
           </div>
           {tables.map((table) => (
-            <div>
-            <p>{table.table_name}</p>
+            <div id={`data-table-id-status=${table.table_id}`}>
+            <p>{table.table_name}
+            {table.reservation_id === null ? "  -   Free" : "   -   Occupied"}</p>
             </div>
           ))}
         </div>
