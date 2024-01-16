@@ -75,35 +75,12 @@ function create(req, res) {
 
 
   async function update(req, res, next) {
-    const { reservationId } = req.body.data;
-    const { tableId } = res.locals.table;
-
-  try {
-    if (!reservationId) {
-      return next({
-        status: 400,
-        message: "Reservation ID is required for the update.",
-      });
-    }
-
-    const updatedTable = await service.update(reservationId, tableId);
-
-    if (!updatedTable || !updatedTable.length) {
-      return next({
-        status: 404,
-        message: "Table not found or not updated.",
-      });
-    }
-
-    res.json({ data: updatedTable });
-  } catch (error) {
-    console.error(error);
-    next({
-      status: 500,
-      message: "Internal Server Error",
-    });
-  }
-  }
+    const updatedTable = {
+        ...req.body.data,
+        reservation_id: res.locals.table.reservation_id,
+      };
+  res.json({ data: await service.update(updatedTable)});
+}
 
 
 module.exports = {
