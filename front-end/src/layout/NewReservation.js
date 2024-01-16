@@ -38,7 +38,6 @@ function NewReservation() {
     event.preventDefault();
     setReservationError(null);
     const abortController = new AbortController();
-    //reservation.people = Number(reservation.people);
     
     try {
         const response = await createReservation(reservation, abortController.signal);

@@ -12,7 +12,22 @@ async function create(table) {
         return CreateTables[0];
 }
 
+async function read(reservationId, tableId) {
+    return knex("tables")
+    .where({ "table_id": tableId })
+    .first()
+  }
+
+async function update(reservationId, tableId) {
+    return knex("tables")
+          .where({ "table_id": tableId })
+          .update({ "reservation_id": reservationId })
+          .returning("*");
+  }
+
 module.exports = {
     list,
     create,
+    read,
+    update,
 }
