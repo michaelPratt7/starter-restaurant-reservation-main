@@ -60,10 +60,11 @@ function create(req, res) {
   }
 
   async function reservationIdExists(req, res, next) {
-    const {reservationId} = req.body.data;
-    const table = await service.readResId(reservationId);
-    if(table) {
-        res.locals.table = table;
+    const {reservationId} = req.params;
+    const parsedReservationId = parseInt(reservationId, 10);
+    const reservation = await service.readResId(parsedReservationId);
+    if(reservation) {
+        res.locals.reservation = reservation;
         return next();
     }
     return next({
@@ -72,13 +73,26 @@ function create(req, res) {
     });
   }
 
+  async function tableIdExists(req, res, next) {
+    const {tableId} = req.params;
+    const table = await service.readTable(tableId);
+    if(table) {
+      res.locals.table = table;
+      return next();
+    }
+    return next({
+      status: 404,
+      message: "Table ID cannot be found"
+    });
+  }
+
 
   async function update(req, res, next) {
     const updatedTable = {
         ...req.body.data,
-        reservation_id: res.locals.table.reservation_id,
+        table_id: res.locals.table.table_id,
       };
-  res.json({ data: await service.update(updatedTable)});
+  res.status(200).json({ data: await service.update(updatedTable)});
 }
 
 
@@ -94,6 +108,7 @@ module.exports = {
     ],
     update: [
       bodyDataHas("reservation_id"),
+      tableIdExists,
       reservationIdExists,
       asyncErrorBoundary(update),
     ]

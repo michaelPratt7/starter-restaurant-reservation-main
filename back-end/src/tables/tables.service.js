@@ -14,12 +14,14 @@ async function create(table) {
 
 async function readTable(tableId) {
     return knex("tables")
+    .select("*")
     .where({ "table_id": tableId})
     .first();
   }
 
 async function readResId(reservationId) {
-    return knex("tables")
+    return knex("reservations")
+        .select("*")
         .where({"reservation_id": reservationId})
         .first();
 }
