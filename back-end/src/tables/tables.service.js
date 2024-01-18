@@ -14,8 +14,7 @@ async function create(table) {
 
 async function read(reservationId, tableId) {
     return knex("tables")
-    .where({ "table_id": tableId })
-    .first()
+    .where({ "table_id": tableId, "reservation_id": reservationId })
   }
 
 async function update(reservationId, tableId) {
