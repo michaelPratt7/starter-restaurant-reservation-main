@@ -61,8 +61,7 @@ function create(req, res) {
 
   async function reservationIdExists(req, res, next) {
     const {reservationId} = req.body.data;
-    const { tableId } = req.params;
-    const table = await service.read(reservationId, tableId);
+    const table = await service.readResId(reservationId);
     if(table) {
         res.locals.table = table;
         return next();
