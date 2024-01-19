@@ -40,6 +40,7 @@ function create(req, res) {
 
   function capacityIsValidNumber(req, res, next) {
     const { data: { capacity }  = {} } = req.body;
+    console.log(capacity)
       if (capacity <= 0 || !Number.isInteger(capacity)) {
           return next({
               status: 400,

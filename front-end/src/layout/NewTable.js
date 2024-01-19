@@ -67,7 +67,7 @@ function NewTable() {
                         name="capacity"
                         type="integer"
                         style={{width: 30}}
-                        onChange={changeHandler}
+                        onChange={numberChangeHandler}
                         value={table.capacity}
                         />
                     </td>
