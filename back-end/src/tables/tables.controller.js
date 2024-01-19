@@ -86,6 +86,29 @@ function create(req, res) {
     });
   }
 
+  async function validCapacity(req, res, next) {
+    const table = res.locals.table;
+    const reservation = res.locals.reservation;
+    if(table.capacity < reservation.people) {
+     return next ({
+      status: 400,
+      message: "Table capacity can't be smaller than amount of people in reservation"
+     });
+    }
+    return next();
+  }
+
+  async function tableIsOccupied(req, res, next) {
+    const table = res.locals.table;
+    if(table.reservation_id !== null) {
+      return next ({
+        status: 400,
+        message: "Table is occupied"
+      })
+    }
+    return next();
+  }
+
 
   async function update(req, res, next) {
     const {reservation_id} = req.body.data;
@@ -108,6 +131,8 @@ module.exports = {
       bodyDataHas("reservation_id"),
       tableIdExists,
       reservationIdExists,
+      validCapacity,
+      tableIsOccupied,
       asyncErrorBoundary(update),
     ]
 }
