@@ -12,21 +12,21 @@ async function create(table) {
         return CreateTables[0];
 }
 
-async function readTable(tableId) {
+function readTable(tableId) {
     return knex("tables")
     .select("*")
     .where({ "table_id": tableId})
     .first();
   }
 
-async function readResId(reservationId) {
+function readResId(reservationId) {
     return knex("reservations")
         .select("*")
         .where({"reservation_id": reservationId})
         .first();
 }
 
-async function update(reservationId, tableId) {
+function update(reservationId, tableId) {
     return knex("tables")
           .where({ "table_id": tableId })
           .update({ "reservation_id": reservationId })

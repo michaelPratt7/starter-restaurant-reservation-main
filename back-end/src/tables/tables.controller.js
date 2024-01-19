@@ -1,4 +1,5 @@
 const service = require ("./tables.service");
+const resService = require ("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function list(req, res) {
@@ -60,16 +61,15 @@ function create(req, res) {
   }
 
   async function reservationIdExists(req, res, next) {
-    const {reservationId} = req.params;
-    const parsedReservationId = parseInt(reservationId, 10);
-    const reservation = await service.readResId(parsedReservationId);
-    if(reservation) {
-        res.locals.reservation = reservation;
-        return next();
+    const { reservation_id } = req.body.data;
+    const reservation = await resService.read(reservation_id);
+    if (reservation) {
+      res.locals.reservation = reservation;
+      return next();
     }
-    return next({
-        status: 404,
-        message: "Reservation ID cannot be found",
+    next({
+      status: 404,
+      message: `${reservation_id} does not exist`
     });
   }
 
@@ -88,11 +88,9 @@ function create(req, res) {
 
 
   async function update(req, res, next) {
-    const updatedTable = {
-        ...req.body.data,
-        table_id: res.locals.table.table_id,
-      };
-  res.status(200).json({ data: await service.update(updatedTable)});
+    const {reservation_id} = req.body.data;
+    const table_id = res.locals.table.table_id
+  res.status(200).json({ data: await service.update(reservation_id, table_id)});
 }
 
 
