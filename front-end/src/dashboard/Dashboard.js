@@ -97,6 +97,7 @@ function Dashboard() {
           </div>
           {tables.map((table) => (
             <div id={`data-table-id-status=${table.table_id}`}>
+              {console.log("Checking Table ID:", table.table_id)}
             <p>{table.table_name}
             {table.reservation_id === null ? "  -   Free" : "   -   Occupied"}</p>
             </div>
