@@ -100,14 +100,14 @@ function create(req, res) {
   }
 
   async function tableIsOccupied(req, res, next) {
-    const table = res.locals.table;
-    if(table.reservation_id !== null) {
-      return next ({
-        status: 400,
-        message: "Table is occupied"
-      })
+    const {reservation_id} = res.locals.table
+    if(reservation_id){
+        return next({
+            status:400,
+            message: `Table is currently occupied`
+          });
     }
-    return next();
+    return next()
   }
 
 

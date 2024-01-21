@@ -1,41 +1,32 @@
 import React, {useState} from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, useParams } from "react-router-dom";
 import { updateTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationSeating() {
     const history = useHistory();
     const location = useLocation();
+    const reservationId = useParams();
     const {tables} = location.state
     const [tableError, setTableError] = useState(null);
+    const [value, setValue] = useState("");
+
+    const changeHandler = (event) => {
+      setValue({
+        [event.target.name]: event.target.value,
+      });
+    }
 
     const submitHandler = async (event) => {
-        event.preventDefault();
-        setTableError(null);
-        const selectedTableId = event.target.elements.table_id.value;
-        console.log("Selected Table ID:", selectedTableId);
-        console.log(tables)
-        const selectedTable = tables.find((table) => {
-          console.log("Table.table_id", table.table_id)
-          return table.table_id === selectedTableId 
-        })
-        
-        
-        
-        const abortController = new AbortController();
-      
-        try {
-          await updateTable(selectedTable, abortController.signal);
-          
-          history.push(`/dashboard`);
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            setTableError(error);
-          }
-        }
-        finally {
-           abortController.abort();
-        }
+      event.preventDefault();
+      setTableError(null);
+      const abortController = new AbortController();
+      try {
+        await updateTable(reservationId, value.table_id, abortController.signal);
+        history.push(`/dashboard`);
+      } catch (error) {
+        setTableError(error);
+      }
       };
 
     return (
@@ -44,7 +35,10 @@ function ReservationSeating() {
                 <div>
                 <label>
                     Pick a table:
-                    <select name="table_id">
+                    <select 
+                      name="table_id"
+                      onChange= {changeHandler}
+                    >
                     {tables.map((table) => (
                         <option key={table.table_id} value={table.table_id}>
                           {console.log(table.table_id)}
@@ -54,7 +48,7 @@ function ReservationSeating() {
                     </select>
                 </label>
                 </div>
-                
+                <ErrorAlert error={tableError} />
                 <div>
                     <button type="button" onClick={() => history.goBack()}>Cancel</button>
                     <button type="submit">Submit</button>
