@@ -23,6 +23,8 @@ function ReservationSeating() {
       const abortController = new AbortController();
       try {
         await updateTable(reservationId, value.table_id, abortController.signal);
+        console.log(reservationId)
+        console.log(value.table_id)
         history.push(`/dashboard`);
       } catch (error) {
         setTableError(error);

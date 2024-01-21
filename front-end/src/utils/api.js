@@ -103,7 +103,7 @@ export async function updateTable(reservationId, tableId, signal) {
     method: "PUT",
     headers,
     body: JSON.stringify({
-      data: { reservation_id: reservationId}
+      data: { reservation_id: reservationId, table_id: tableId}
     }),
     signal,
   };
