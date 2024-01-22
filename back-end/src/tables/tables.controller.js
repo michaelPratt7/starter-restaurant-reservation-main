@@ -75,8 +75,8 @@ function create(req, res) {
   }
 
   async function tableIdExists(req, res, next) {
-    const {tableId} = req.params;
-    const table = await service.readTable(tableId);
+    const {table_id} = req.params;
+    const table = await service.readTable(table_id);
     if(table) {
       res.locals.table = table;
       return next();
