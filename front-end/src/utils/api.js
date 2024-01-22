@@ -98,14 +98,37 @@ export async function listTables(signal) {
 }
 
 export async function updateTable(reservationId, tableId, signal) {
-  const url = `${API_BASE_URL}/tables/${tableId}/seat`;
-  const options = {
-    method: "PUT",
-    headers,
-    body: JSON.stringify({
-      data: { reservation_id: reservationId, table_id: tableId}
-    }),
-    signal,
-  };
-  return await fetchJson(url, options);
+  try {
+    // Log the type of tableId
+    console.log('Type of tableId:', typeof tableId);
+
+    // Log the value of tableId
+    console.log('Value of tableId:', tableId);
+
+    // Check if tableId is a valid integer
+    if (!Number.isInteger(tableId) || tableId <= 0) {
+      throw new Error('Invalid tableId');
+    }
+
+    // Construct the URL
+    const url = `${API_BASE_URL}/tables/${tableId}/seat`;
+    const options = {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ reservation_id: reservationId }),
+      signal,
+    };
+
+    // Make the request
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`Failed to update table. Status: ${response.status}`);
+    }
+
+    // Parse the JSON response
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 }

@@ -12,24 +12,22 @@ function ReservationSeating() {
     const [value, setValue] = useState("");
 
     const changeHandler = (event) => {
-      setValue({
-        [event.target.name]: event.target.value,
-      });
-    }
+      const selectedValue = event.target.value
+      setValue(selectedValue);
+    };
 
     const submitHandler = async (event) => {
       event.preventDefault();
       setTableError(null);
       const abortController = new AbortController();
+    
       try {
-        await updateTable(reservationId, value.table_id, abortController.signal);
-        console.log(reservationId)
-        console.log(value.table_id)
+        await updateTable(reservationId, value, abortController.signal);
         history.push(`/dashboard`);
       } catch (error) {
         setTableError(error);
       }
-      };
+    };
 
     return (
         <main>
