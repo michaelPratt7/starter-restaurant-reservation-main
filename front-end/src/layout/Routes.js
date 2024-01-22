@@ -33,7 +33,7 @@ function Routes() {
       <Route path="/tables/new">
         <NewTable />
       </Route>
-      <Route path="/reservations/:reservationId/seat">
+      <Route path="/reservations/:reservation_id/seat">
         <ReservationSeating />
       </Route>
       <Route>

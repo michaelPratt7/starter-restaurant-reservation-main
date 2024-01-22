@@ -6,7 +6,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 function ReservationSeating() {
     const history = useHistory();
     const location = useLocation();
-    const {reservationId} = useParams();
+    const {reservation_id} = useParams();
     const {tables} = location.state
     const [tableError, setTableError] = useState(null);
     const [value, setValue] = useState("");
@@ -22,7 +22,7 @@ function ReservationSeating() {
       const abortController = new AbortController();
     
       try {
-        await updateTable(reservationId, value, abortController.signal);
+        await updateTable(reservation_id, value, abortController.signal);
         history.push(`/dashboard`);
       } catch (error) {
         setTableError(error);
