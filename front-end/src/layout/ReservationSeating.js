@@ -34,16 +34,14 @@ function ReservationSeating() {
             <form onSubmit={submitHandler}>
                 <div>
                 <label>
-                    Pick a table:
-                    <select 
-                      name="table_id"
-                      onChange= {changeHandler}
-                    >
-                    {tables.map((table) => (
-                        <option key={table.table_id} value={table.table_id}>
+                  Pick a table:
+                    <select name="table_id" onChange={changeHandler}>
+                    <option value="">Select..</option>
+                      {tables.map((table) => (
+                      <option key={table.table_id} value={table.table_id}>
                         {table.table_name} - {table.capacity}
-                        </option>
-                    ))}
+                      </option>
+                              ))}
                     </select>
                 </label>
                 </div>
