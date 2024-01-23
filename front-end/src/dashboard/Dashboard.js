@@ -68,8 +68,8 @@ function Dashboard() {
     const result = window.confirm("Is this table ready to seat new guests?")
     if(result) {
       await finishTable(table_id)
+      history.go(0);
     }
-    history.go();
   }
 
 
@@ -106,7 +106,10 @@ function Dashboard() {
               <p>
                 {table.table_name}
                 {table.reservation_id === null ? "  -   Free" : "   -   Occupied"} 
-                {table.reservation_id !== null && <button onClick={() => handleDelete(table.table_id)}>Finish</button>}
+                {table.reservation_id !== null && 
+                  <button id={`data-table-id-finish=${table.table_id}`} 
+                    onClick={() => handleDelete(table.table_id)}>Finish</button>
+                   }
               </p>
             </div>
           ))}

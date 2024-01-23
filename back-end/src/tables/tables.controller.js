@@ -83,7 +83,7 @@ function create(req, res) {
     }
     return next({
       status: 404,
-      message: "Table ID cannot be found"
+      message: `Table ID: ${table_id} cannot be found`
     });
   }
 
@@ -117,9 +117,28 @@ function create(req, res) {
   res.status(200).json({ data: await service.update(reservation_id, table_id)});
 }
 
+async function destroy(req, res, next) {
+  const table_id = res.locals.table.table_id
+  await service.destroy(table_id)
+  res.sendStatus(200)
+}
+
+async function tableIsNotOccupied(req, res, next) {
+  const {reservation_id} = res.locals.table
+  if(reservation_id === null){
+      return next({
+          status:400,
+          message: `Table is not occupied`
+        });
+  }
+  return next()
+}
+
+
 
 module.exports = {
     list: [asyncErrorBoundary(list)],
+
     create: [
       bodyDataHas("table_name"),
       bodyDataHas("capacity"),
@@ -128,6 +147,7 @@ module.exports = {
       tableNameLength,
       asyncErrorBoundary(create),
     ],
+
     update: [
       bodyDataHas("reservation_id"),
       tableIdExists,
@@ -135,5 +155,11 @@ module.exports = {
       validCapacity,
       tableIsOccupied,
       asyncErrorBoundary(update),
-    ]
+    ],
+
+    delete: [
+      tableIdExists,
+      tableIsNotOccupied,
+      asyncErrorBoundary(destroy),
+    ],
 }
