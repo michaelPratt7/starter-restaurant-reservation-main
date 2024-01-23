@@ -33,10 +33,21 @@ function update(reservationId, tableId) {
           .returning("*");
   }
 
-function destroy(tableId) {
-    return knex("tables")
-        .where({"table_id": tableId})
-        .update({"reservation_id": null})
+async function destroy(reservationId, tableId) {
+    const trx = await knex.transaction();
+    let updatedTable = {}
+    return trx("reservations")
+        .where({reservationId})
+        .update({status: "finished"})
+        .then(() => 
+            trx("tables")
+                .where({tableId})
+                .update({reservationId: null}, "*")
+                .then((results) => (updatedTable = results[0]))
+        )
+        .then(trx.commit)
+        .then(() => updatedTable)
+        .catch(trx.rollback)
 }
 
 module.exports = {

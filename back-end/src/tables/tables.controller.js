@@ -118,7 +118,7 @@ function create(req, res) {
 }
 
 async function tableIsNotOccupied(req, res, next) {
-  const {reservation_id, table_id} = res.locals.table
+  const {reservation_id} = res.locals.table
   if(reservation_id === null){
     return next({
         status:400,
@@ -132,7 +132,7 @@ async function tableIsNotOccupied(req, res, next) {
 async function destroy(req, res, next) {
   const {table_id} = res.locals.table;
   await service.destroy(table_id)
-  res.sendStatus(204)
+  response.status(204).json({ data: { status: "finished" } });
 }
 
 module.exports = {

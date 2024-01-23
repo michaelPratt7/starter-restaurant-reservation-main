@@ -86,14 +86,16 @@ function Dashboard() {
           </div>
           <ErrorAlert error={reservationsError} />
           {/* List of Reservations */}
-          {reservations.map((reservation) => (
+          {reservations.map((reservation) => {
+            {reservation.status !== "finished" &&
             <div className="flex row mt-5">
               <p className="mr-3">{formatAsTime(reservation.reservation_time)} | {reservation.last_name} - party of {reservation.people}</p>
               <Link to={`/reservations/${reservation.reservation_id}/seat`}>
             <button>Seat</button>
           </Link>
             </div>
-          ))}
+            }
+          })}
         </div>
         {/* List of Tables */}
         <div class="col-md-6">
