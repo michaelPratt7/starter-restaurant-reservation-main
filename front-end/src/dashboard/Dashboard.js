@@ -33,6 +33,7 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
+  //Loading the list of tables
   useEffect(() => {
     const abortController = new AbortController();
     async function getTables() {
@@ -43,7 +44,7 @@ function Dashboard() {
     return () => abortController.abort();
   }, []);
 
-
+  //Click Handler to navigate between dates
   const handleButtonClick = (action) => {
 
     switch (action) {
@@ -64,8 +65,10 @@ function Dashboard() {
     }
   };
 
+// Component for TableList
   const tableList = tables.map((table) => <TableList table = {table} />)
 
+  
   return (
     <main>
       <h1 className="mb-3">Dashboard</h1>
@@ -75,12 +78,14 @@ function Dashboard() {
           <div className="d-md-flex mb-1">
             <h4 className="mb-0">Reservations for date</h4>
           </div>
+          {/* Date navigation buttons */}
           <div>
             <button onClick={() => handleButtonClick("previous")}>Previous</button>
             <button onClick={() => handleButtonClick("today")}>Today</button>
             <button onClick={() => handleButtonClick("next")}>Next</button>
           </div>
           <ErrorAlert error={reservationsError} />
+          {/* List of Reservations */}
           {reservations.map((reservation) => (
             <div className="flex row mt-5">
               <p className="mr-3">{formatAsTime(reservation.reservation_time)} | {reservation.last_name} - party of {reservation.people}</p>
@@ -90,12 +95,13 @@ function Dashboard() {
             </div>
           ))}
         </div>
+        {/* List of Tables */}
         <div class="col-md-6">
         <div className="d-md-flex mb-3">
             <h4 className="mb-0">Tables</h4>
           </div>
-          {tableList}
-        </div>
+          {tableList} 
+          </div>
       </div>
       </div>
     </main>

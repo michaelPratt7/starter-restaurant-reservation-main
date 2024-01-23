@@ -14,7 +14,7 @@ const TableList = ({table}) => {
         }
       }
 
-    return (
+    return ( 
         <div id={`data-table-id-status=${table.table_id}`}>
               <p>
                 {table.table_name}
