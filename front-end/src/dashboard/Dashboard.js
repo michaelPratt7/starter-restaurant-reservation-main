@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import { listTables } from "../utils/api";
-import { finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous, formatAsTime } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
+import TableList from "../layout/TableList";
 
 /**
  * Defines the dashboard page.
@@ -64,16 +64,7 @@ function Dashboard() {
     }
   };
 
-  async function handleDelete(table_id) {
-    console.log('Deleting table:', table_id);
-    const result = window.confirm("Is this table ready to seat new guests?")
-    if(result) {
-      console.log('Calling finishTable for table:', table_id);
-      await finishTable(table_id)
-      history.go(0);
-    }
-  }
-
+  const tableList = tables.map((table) => <TableList table = {table} />)
 
   return (
     <main>
@@ -103,19 +94,7 @@ function Dashboard() {
         <div className="d-md-flex mb-3">
             <h4 className="mb-0">Tables</h4>
           </div>
-          {console.log('Tables:', tables)}
-          {tables.map((table) => (
-              <div id={`data-table-id-status=${table.table_id}`}>
-              <p>
-                {table.table_name}
-                {table.reservation_id === null ? "  -   Free" : "   -   Occupied"} 
-                {table.reservation_id !== null && 
-                  <button id={`data-table-id-finish=${table.table_id}`} 
-                    onClick={() => handleDelete(table.table_id)}>Finish</button>
-                   }
-              </p>
-            </div>
-          ))}
+          {tableList}
         </div>
       </div>
       </div>
