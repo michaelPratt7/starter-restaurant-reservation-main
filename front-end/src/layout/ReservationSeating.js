@@ -1,15 +1,25 @@
-import React, {useState} from "react";
-import { useLocation, useHistory, useParams } from "react-router-dom";
+import React, {useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { updateTable } from "../utils/api";
+import { listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationSeating() {
     const history = useHistory();
-    const location = useLocation();
     const {reservation_id} = useParams();
-    const {tables} = location.state
+    const [tables, setTables] = useState([]);
     const [tableError, setTableError] = useState(null);
     const [value, setValue] = useState("");
+
+    useEffect(() => {
+      const abortController = new AbortController();
+      async function getTables() {
+        const newTables = await listTables(abortController.signal);
+        setTables(newTables);
+      }
+      getTables();
+      return () => abortController.abort();
+    }, []);
 
     const changeHandler = (event) => {
       const selectedValue = event.target.value
