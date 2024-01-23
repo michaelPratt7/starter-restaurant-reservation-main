@@ -117,24 +117,23 @@ function create(req, res) {
   res.status(200).json({ data: await service.update(reservation_id, table_id)});
 }
 
-async function destroy(req, res, next) {
-  const table_id = res.locals.table.table_id
-  await service.destroy(table_id)
-  res.sendStatus(200)
-}
-
 async function tableIsNotOccupied(req, res, next) {
-  const {reservation_id} = res.locals.table
+  const {reservation_id, table_id} = res.locals.table
   if(reservation_id === null){
-      return next({
-          status:400,
-          message: `Table is not occupied`
-        });
+    return next({
+        status:400,
+        message: `Table is not occupied`
+      });
+  } else {
+    res.sendStatus(200)
   }
-  return next()
 }
 
-
+async function destroy(req, res, next) {
+  const {table_id} = res.locals.table;
+  await service.destroy(table_id)
+  res.sendStatus(204)
+}
 
 module.exports = {
     list: [asyncErrorBoundary(list)],
