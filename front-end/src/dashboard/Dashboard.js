@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import { listTables } from "../utils/api";
+import { finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous, formatAsTime } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
@@ -63,6 +64,14 @@ function Dashboard() {
     }
   };
 
+  async function handleDelete(table_id) {
+    const result = window.confirm("Is this table ready to seat new guests?")
+    if(result) {
+      await finishTable(table_id)
+    }
+    history.go();
+  }
+
 
   return (
     <main>
@@ -82,9 +91,7 @@ function Dashboard() {
           {reservations.map((reservation) => (
             <div className="flex row mt-5">
               <p className="mr-3">{formatAsTime(reservation.reservation_time)} | {reservation.last_name} - party of {reservation.people}</p>
-              <Link to={{
-            pathname: `/reservations/${reservation.reservation_id}/seat`,
-          }}>
+              <Link to={`/reservations/${reservation.reservation_id}/seat`}>
             <button>Seat</button>
           </Link>
             </div>
@@ -96,8 +103,11 @@ function Dashboard() {
           </div>
           {tables.map((table) => (
             <div id={`data-table-id-status=${table.table_id}`}>
-            <p>{table.table_name}
-            {table.reservation_id === null ? "  -   Free" : "   -   Occupied"}</p>
+              <p>
+                {table.table_name}
+                {table.reservation_id === null ? "  -   Free" : "   -   Occupied"} 
+                {table.reservation_id !== null && <button onClick={() => handleDelete(table.table_id)}>Finish</button>}
+              </p>
             </div>
           ))}
         </div>
