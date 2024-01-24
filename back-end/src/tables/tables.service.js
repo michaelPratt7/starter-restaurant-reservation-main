@@ -33,16 +33,16 @@ function update(reservationId, tableId) {
           .returning("*");
   }
 
-async function destroy(reservationId, tableId) {
+  async function destroy(reservation_id, table_id) {
     const trx = await knex.transaction();
     let updatedTable = {}
     return trx("reservations")
-        .where({reservationId})
+        .where({reservation_id})
         .update({status: "finished"})
         .then(() => 
             trx("tables")
-                .where({tableId})
-                .update({reservationId: null}, "*")
+                .where({table_id})
+                .update({reservation_id: null}, "*")
                 .then((results) => (updatedTable = results[0]))
         )
         .then(trx.commit)

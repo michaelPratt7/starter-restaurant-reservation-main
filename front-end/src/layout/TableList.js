@@ -6,13 +6,15 @@ const TableList = ({table}) => {
     
     const history = useHistory();
 
+    
+
     async function handleDelete(table_id) {
-        const result = window.confirm("Is this table ready to seat new guests?")
-        if(result) {
-          await finishTable(table_id)
-          history.go(0);
-        }
+      const result = window.confirm("Is this table ready to seat new guests?");
+      if (result && table_id) {
+        await finishTable(table_id);
+        history.go(0);
       }
+    }
 
     return ( 
         <div id={`data-table-id-status=${table.table_id}`}>
