@@ -20,8 +20,16 @@ async function read(reservationId) {
         .first()
 }
 
+async function update(reservationId, status) {
+    return knex("reservations")
+        .where({ "reservation_id": reservationId})
+        .update({"status": status})
+        .returning("*")
+}
+
 module.exports = {
     list,
     create,
     read,
+    update,
 }

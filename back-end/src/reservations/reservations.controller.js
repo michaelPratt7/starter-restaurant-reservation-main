@@ -130,7 +130,7 @@ async function reservationExists(req, res, next) {
   }
   return next({
       status: 404,
-      message: "Reservation cannot be found",
+      message: `Reservation ${reservation_id} cannot be found`,
   });
 }
 
@@ -139,6 +139,48 @@ async function read(req, res, next) {
   res.json({data});
 }
 
+function resStatusValidity(req, res, next) {
+  const { data: { status }  = {} } = req.body;
+  if(status === "seated" || status === "finished") {
+    return next ({
+      status: 400,
+      message: "Reservation status can't be seated or finished"
+    })
+  }
+  return next();
+}
+
+async function update(req, res, next) {
+    const { reservation_id } = res.locals.reservation;
+    const status = req.body.data;
+    if(['booked', 'seated', 'finished'].includes(status)) {
+      await service.update(reservation_id, status);
+      res.status(200).json({ data: { status: status } });
+    }
+  } 
+
+
+function cantChangeFinished(req, res, next) {
+  const status = res.locals.reservation.status;
+  if(status === "finished") {
+    return next({
+      status:400,
+      message:"You can't change the status of an already finished reservation"
+    })
+  }
+  return next();
+}
+
+function statusValidity(req, res, next) {
+  const status = req.body.data;
+  if (!['booked', 'seated', 'finished'].includes(status)) {
+    return next({
+      status:400,
+      message: "Status can't be unknown"
+    })
+  }
+  return next();
+}
 
 
 module.exports = {
@@ -161,8 +203,15 @@ module.exports = {
     propertyIsNotEmpty("reservation_date"),
     propertyIsNotEmpty("reservation_time"),
     propertyIsNotEmpty("people"),
+    resStatusValidity,
     asyncErrorBoundary(create),
   ],
-  read: [reservationExists, asyncErrorBoundary(read)]
+  read: [reservationExists, asyncErrorBoundary(read)],
+  update: [
+    reservationExists,
+    cantChangeFinished,
+    statusValidity,
+    asyncErrorBoundary(update),
+  ]
 
 };

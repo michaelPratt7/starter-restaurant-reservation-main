@@ -130,9 +130,17 @@ async function tableIsNotOccupied(req, res, next) {
 }
 
 async function destroy(req, res, next) {
-  const {table_id} = res.locals.table;
-  await service.destroy(table_id)
-  response.status(204).json({ data: { status: "finished" } });
+  const { table_id } = res.locals.table;
+  const { reservation_id } = res.locals.reservation;
+
+  console.log('Reservation in destroy:', res.locals.reservation);
+
+  await service.destroy(table_id, reservation_id);
+
+  res.status(204).json({
+    path: 'status',
+    data: { status: res.locals.reservation.status },
+  });
 }
 
 module.exports = {
