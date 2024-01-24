@@ -6,6 +6,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous, formatAsTime } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import TableList from "../layout/TableList";
+import ReservationList from "../layout/ReservationList";
 
 /**
  * Defines the dashboard page.
@@ -65,8 +66,9 @@ function Dashboard() {
     }
   };
 
-// Component for TableList
+// Components for TableList and ReservationList
   const tableList = tables.map((table) => <TableList table = {table} />)
+  const reservationList = reservations.map((reservation) => <ReservationList reservation = {reservation} />)
 
   
   return (
@@ -86,16 +88,7 @@ function Dashboard() {
           </div>
           <ErrorAlert error={reservationsError} />
           {/* List of Reservations */}
-          {reservations.map((reservation) => {
-            {reservation.status !== "finished" &&
-            <div className="flex row mt-5">
-              <p className="mr-3">{formatAsTime(reservation.reservation_time)} | {reservation.last_name} - party of {reservation.people}</p>
-              <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-            <button>Seat</button>
-          </Link>
-            </div>
-            }
-          })}
+          {reservationList}
         </div>
         {/* List of Tables */}
         <div class="col-md-6">
