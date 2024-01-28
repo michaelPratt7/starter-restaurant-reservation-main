@@ -84,7 +84,7 @@ function Dashboard() {
   }
 
 // Components for TableList and ReservationList
-  const tableList = tables.map((table) => <TableList table = {table} />)
+  //const tableList = tables.map((table) => <TableList table = {table} />)
   const reservationList = reservations.map((reservation) => <ReservationList reservation = {reservation} />)
 
   
@@ -114,15 +114,17 @@ function Dashboard() {
           </div>
           {tables.map((table) => (
             <div id={`data-table-id-status=${table.table_id}`}>
-            <p>
+            <p data-table-id-status={`${table.table_id}`}>
               {table.table_name}
-              {table.reservation_id === null ? "  -   Free" : "   -   Occupied"} 
-              {table.reservation_id !== null && 
-                <button id={`data-table-id-finish=${table.table_id}`} 
+              {table.reservation_id === null ? "  -   Free" : "   -   Occupied"}
+
+            </p>
+        {table.reservation_id !== null &&
+                <button id={`data-table-id-finish=${table.table_id}`}
                   onClick={() => handleDelete(table.table_id)}>Finish</button>
                  }
-            </p>
           </div>
+          
           ))} 
           </div>
       </div>
