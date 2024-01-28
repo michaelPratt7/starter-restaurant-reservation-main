@@ -152,15 +152,16 @@ function resStatusValidity(req, res, next) {
 
 async function update(req, res, next) {
     const { reservation_id } = res.locals.reservation;
-    const status = req.body.data;
+    const status = res.locals.reservation.status
     if(['booked', 'seated', 'finished'].includes(status)) {
-      res.status(200).json({ data: await service.update(reservation_id, status)});
+      await service.update(reservation_id, status)
+      res.status(200).json({ data: {status: status}});
     }
   } 
 
 
 function cantChangeFinished(req, res, next) {
-  const status = res.locals.reservation.status;
+  const {status} = res.locals.reservation;
   if(status === "finished") {
     return next({
       status:400,
@@ -171,7 +172,7 @@ function cantChangeFinished(req, res, next) {
 }
 
 function statusValidity(req, res, next) {
-  const status = req.body.data;
+  const {status} = res.locals.reservation;
   if (!['booked', 'seated', 'finished'].includes(status)) {
     return next({
       status:400,
