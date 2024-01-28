@@ -109,8 +109,8 @@ export async function updateTable(reservation_id, table_id, signal) {
     return await fetchJson(url, options); 
   }
 
-  export async function finishTable(table_id) {
+  export async function finishTable(table_id, signal) {
     const url = `${API_BASE_URL}/tables/${table_id}/seat`;
     const options = { method: "DELETE"};
-    return await fetchJson(url, options)
+    return await fetchJson(url, options, signal)
   }

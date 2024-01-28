@@ -25,6 +25,7 @@ function Dashboard() {
   
 
   useEffect(loadDashboard, [date]);
+  useEffect(loadTables, []);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -36,7 +37,7 @@ function Dashboard() {
   }
 
   //Loading the list of tables
-  useEffect(() => {
+  function loadTables() {
     const abortController = new AbortController();
     async function getTables() {
       const newTables = await listTables(abortController.signal);
@@ -44,7 +45,7 @@ function Dashboard() {
     }
     getTables();
     return () => abortController.abort();
-  }, []);
+  }
 
   //Click Handler to navigate between dates
   const handleButtonClick = (action) => {
@@ -68,12 +69,18 @@ function Dashboard() {
   };
 
   async function handleDelete(table_id) {
+    const abortController = new AbortController();
     const result = window.confirm("Is this table ready to seat new guests?");
-    if (result && table_id) {
-      await finishTable(table_id);
-      
+    if (result) {
+      try {
+        await finishTable(table_id, abortController.signal);
+        loadDashboard();
+        loadTables();
+      } catch (error) {
+        console.log(error)
+      }
     }
-    history.go(0);
+    return () => abortController.abort();
   }
 
 // Components for TableList and ReservationList

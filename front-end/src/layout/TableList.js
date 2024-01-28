@@ -10,7 +10,7 @@ const TableList = ({table}) => {
 
     async function handleDelete(table_id) {
       const result = window.confirm("Is this table ready to seat new guests?");
-      if (result && table_id) {
+      if (result) {
         await finishTable(table_id);
         history.go(0);
       }
