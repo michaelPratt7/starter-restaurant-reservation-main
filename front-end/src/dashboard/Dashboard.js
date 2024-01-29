@@ -6,7 +6,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import { finishTable } from "../utils/api";
-import TableList from "../layout/TableList";
+//import TableList from "../layout/TableList";
 import ReservationList from "../layout/ReservationList";
 
 /**
