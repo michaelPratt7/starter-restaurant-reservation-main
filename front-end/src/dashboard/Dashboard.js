@@ -21,6 +21,7 @@ function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tablesError, setTablesError] = useState(null);
   const history = useHistory();
   
 
@@ -39,11 +40,10 @@ function Dashboard() {
   //Loading the list of tables
   function loadTables() {
     const abortController = new AbortController();
-    async function getTables() {
-      const newTables = await listTables(abortController.signal);
-      setTables(newTables);
-    }
-    getTables();
+    setTablesError(null);
+    listTables(abortController.signal)
+    .then(setTables)
+    .catch(setTablesError)
     return () => abortController.abort();
   }
 
@@ -113,18 +113,18 @@ function Dashboard() {
             <h4 className="mb-0">Tables</h4>
           </div>
           {tables.map((table) => (
-            <div id={`data-table-id-status=${table.table_id}`}>
-            <p data-table-id-status={`${table.table_id}`}>
+             <div data-table-id-status={`${table.table_id}`}>
+              <div>
               {table.table_name}
               {table.reservation_id === null ? "  -   Free" : "   -   Occupied"}
-
-            </p>
-        {table.reservation_id !== null &&
+              </div>
+              <div>
+                {table.reservation_id !== null &&
                 <button id={`data-table-id-finish=${table.table_id}`}
                   onClick={() => handleDelete(table.table_id)}>Finish</button>
                  }
+              </div>
           </div>
-          
           ))} 
           </div>
       </div>
