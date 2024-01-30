@@ -120,7 +120,7 @@ function Dashboard() {
               </div>
               <div>
                 {table.reservation_id !== null &&
-                <button id={`data-table-id-finish=${table.table_id}`}
+                <button data-table-id-finish={`${table.table_id}`}
                   onClick={() => handleDelete(table.table_id)}>Finish</button>
                  }
               </div>
