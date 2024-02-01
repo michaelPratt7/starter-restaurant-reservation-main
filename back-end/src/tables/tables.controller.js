@@ -128,6 +128,17 @@ async function tableIsNotOccupied(req, res, next) {
   return next();
 }
 
+async function resStatusIsNotSeated(req, res, next) {
+  const {status} = res.locals.reservation;
+  if(status === "seated") {
+    return next({
+      status:400,
+      message: `Reservation status cannot already be seated`
+    })
+  }
+  return next();
+}
+
 async function destroy(req, res, next) {
   const { table_id, reservation_id } = res.locals.table;
   await service.destroy( reservation_id, table_id,);
@@ -152,6 +163,7 @@ module.exports = {
       reservationIdExists,
       validCapacity,
       tableIsOccupied,
+      resStatusIsNotSeated,
       asyncErrorBoundary(update),
     ],
 

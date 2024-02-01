@@ -151,8 +151,8 @@ function resStatusValidity(req, res, next) {
 }
 
 async function update(req, res, next) {
-    const { reservation_id } = res.locals.reservation;
-    const status = res.locals.reservation.status
+  const {reservation_id} = res.locals.reservation;
+  const { data: { status }  = {} } = req.body;
     if(['booked', 'seated', 'finished'].includes(status)) {
       await service.update(reservation_id, status)
       res.status(200).json({ data: {status: status}});
@@ -161,7 +161,7 @@ async function update(req, res, next) {
 
 
 function cantChangeFinished(req, res, next) {
-  const {status} = res.locals.reservation;
+  const { status } = res.locals.reservation;
   if(status === "finished") {
     return next({
       status:400,
@@ -172,8 +172,8 @@ function cantChangeFinished(req, res, next) {
 }
 
 function statusValidity(req, res, next) {
-  const {status} = res.locals.reservation;
-  if (!['booked', 'seated', 'finished'].includes(status)) {
+  const { data: { status }  = {} } = req.body;
+  if (status === "unknown") {
     return next({
       status:400,
       message: "Status can't be unknown"
