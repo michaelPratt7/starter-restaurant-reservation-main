@@ -7,8 +7,14 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
  * List handler for reservation resources
  */
 async function list(req, res) {
-  res.json({data: await service.list(req.query.date)});
+  const mobile_number = req.query.mobile_number
+  if(mobile_number) {
+    res.json({data: await service.search(mobile_number)});
+  } else {
+    res.json({data: await service.list(req.query.date)});
+  } 
 }
+
 
 function create(req, res) {
   service
@@ -212,6 +218,7 @@ module.exports = {
     cantChangeFinished,
     statusValidity,
     asyncErrorBoundary(update),
-  ]
+  ],
+  search: [asyncErrorBoundary(list)],
 
 };
