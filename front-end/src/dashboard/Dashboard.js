@@ -6,7 +6,6 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { today, next, previous } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import { finishTable } from "../utils/api";
-//import TableList from "../layout/TableList";
 import ReservationList from "../layout/ReservationList";
 
 /**
@@ -83,8 +82,7 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
-// Components for TableList and ReservationList
-  //const tableList = tables.map((table) => <TableList table = {table} />)
+// Component for ReservationList
   const reservationList = reservations.map((reservation) => <ReservationList reservation = {reservation} />)
 
   
