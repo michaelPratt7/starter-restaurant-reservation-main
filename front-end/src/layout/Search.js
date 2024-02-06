@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { listResByMobileNumber } from "../utils/api";
+import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "../layout/ReservationList";
 
@@ -17,7 +17,7 @@ function Search() {
         event.preventDefault();
         setReservationsError(null);
         const abortController = new AbortController();
-        listResByMobileNumber(mobileNumber, abortController.signal)
+        listReservations({ mobile_number: mobileNumber }, abortController.signal)
         .then(setReservations)
         .catch(setReservationsError);
         return () => abortController.abort();
