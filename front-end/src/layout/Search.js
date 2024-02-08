@@ -23,9 +23,19 @@ function Search() {
         return () => abortController.abort();
     }
 
-    const reservationList = reservations.map((reservation) => <ReservationList reservation = {reservation} />)
+    const reservationList = reservations.length > 0 ? (
+         reservations.map((reservation) => (
+        <div>
+        {reservation && (
+        <ReservationList reservation = {reservation} />
+        )}
+        </div>
+        ))
+    ) : (
+        <div>No reservations found</div>
+    )
 
-
+    
     return (
         <main>
         <form className= "mt-3" onSubmit={submitHandler}>

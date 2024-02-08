@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import { listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -83,7 +83,20 @@ function Dashboard() {
   }
 
 // Component for ReservationList
-  const reservationList = reservations.map((reservation) => <ReservationList reservation = {reservation} />)
+  const reservationList = reservations.map((reservation) => (
+    <>
+    {reservation.status !== "finished" &&
+      <ReservationList reservation = {reservation} />
+  }
+    {reservation.status === "seated" ? "" : 
+    <div className= "flex ml-2">
+    <Link to={`/reservations/${reservation.reservation_id}/seat`}>
+    <button>Seat</button>
+  </Link>
+  </div>
+}
+</>
+  ))
 
   
   return (
