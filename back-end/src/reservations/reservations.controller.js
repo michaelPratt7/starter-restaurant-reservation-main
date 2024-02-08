@@ -156,11 +156,11 @@ function resStatusValidity(req, res, next) {
   return next();
 }
 
-async function update(req, res, next) {
+async function statusUpdate(req, res, next) {
   const {reservation_id} = res.locals.reservation;
   const { data: { status }  = {} } = req.body;
-    if(['booked', 'seated', 'finished'].includes(status)) {
-      await service.update(reservation_id, status)
+    if(['booked', 'seated', 'finished', 'cancelled'].includes(status)) {
+      await service.statusUpdate(reservation_id, status)
       res.status(200).json({ data: {status: status}});
     }
   } 
@@ -188,6 +188,14 @@ function statusValidity(req, res, next) {
   return next();
 }
 
+async function resUpdate(req, res, next) {
+  const updatedRes = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  res.json({ data: await service.resUpdate(updatedRes)});
+}
+
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
@@ -213,12 +221,31 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   read: [reservationExists, asyncErrorBoundary(read)],
-  update: [
+  statusUpdate: [
     reservationExists,
     cantChangeFinished,
     statusValidity,
-    asyncErrorBoundary(update),
+    asyncErrorBoundary(statusUpdate),
   ],
   search: [asyncErrorBoundary(list)],
+  resUpdate: [
+    bodyDataHas("first_name"),
+    bodyDataHas("last_name"),
+    bodyDataHas("mobile_number"),
+    bodyDataHas("reservation_date"),
+    bodyDataHas("reservation_time"),
+    bodyDataHas("people"),
+    propertyIsNotEmpty("first_name"),
+    propertyIsNotEmpty("last_name"),
+    propertyIsNotEmpty("reservation_date"),
+    propertyIsNotEmpty("reservation_time"),
+    propertyIsNotEmpty("people"),
+    propertyIsNotEmpty("mobile_number"),
+    reservationDateIsValid,
+    reservationTimeIsValid,
+    peopleIsValidNumber,
+    reservationExists,
+    asyncErrorBoundary(resUpdate),
+  ],
 
 };

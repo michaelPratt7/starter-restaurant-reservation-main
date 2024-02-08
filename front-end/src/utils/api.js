@@ -117,4 +117,6 @@ export async function updateTable(reservation_id, table_id, signal) {
       signal
     };
     return await fetchJson(url, options)
-  } 
+  }
+
+  export async function

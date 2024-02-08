@@ -21,11 +21,15 @@ async function read(reservationId) {
         .first()
 }
 
-async function update(reservationId, status) {
+async function statusUpdate(reservationId, status) {
     return knex("reservations")
         .where({ "reservation_id": reservationId})
         .update({"status": status})
         .returning("*")
+}
+
+async function cancelStatusUpdate(reservationId) {
+    //how do i add an update for status: cancelled as a PUT request along the same route as another PUT request
 }
 
 function search(mobile_number) {
@@ -37,10 +41,19 @@ function search(mobile_number) {
       .orderBy("reservation_date");
   }
 
+function resUpdate(updatedRes) {
+    return knex("reservations")
+        .select("*")
+        .where({"reservation_id": updatedRes.reservation_id})
+        .update(updatedRes, "*")
+        .then((updatedRecords) => updatedRecords[0]);
+}
+
 module.exports = {
     list,
     create,
     read,
-    update,
+    statusUpdate,
     search,
+    resUpdate,
 }
