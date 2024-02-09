@@ -44,7 +44,7 @@ function search(mobile_number) {
       .orderBy("reservation_date");
   }
 
-function resUpdate(updatedRes) {
+async function resUpdate(updatedRes) {
     return knex("reservations")
         .select("*")
         .where({"reservation_id": updatedRes.reservation_id})

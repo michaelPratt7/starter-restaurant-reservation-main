@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams, useHistory} from "react-router-dom";
-import { getRes, updateRes } from "../utils/api";}
+import { getRes, updateRes } from "../utils/api";
 import ReservationForm from "./ReservationForm";
 
 function EditReservation () {
     const history = useHistory();
-    const {reservationId} = useParams();
+    const {reservation_id} = useParams();
     const [reservation, setReservation] = useState({});
     const [reservationError, setReservationError] = useState(null);
 
@@ -14,7 +14,7 @@ function EditReservation () {
         const abortController = new AbortController();
         try {
         async function getReservation(){
-            const res = await getRes(reservationId, abortController.signal)
+            const res = await getRes(reservation_id, abortController.signal)
             setReservation(res)
         }
         getReservation();
@@ -24,7 +24,7 @@ function EditReservation () {
         }
     }
         return () => abortController.abort
-    }, [reservationId]);
+    }, [reservation_id]);
 
 
     async function submitHandler(event) {

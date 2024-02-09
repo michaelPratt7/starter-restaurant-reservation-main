@@ -119,8 +119,8 @@ export async function updateTable(reservation_id, table_id, signal) {
     return await fetchJson(url, options)
   }
 
-  export async function cancelStatus(reservation_id, signal) {
-    const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  export async function cancelStatus(updatedRes, signal) {
+    const url = `${API_BASE_URL}/reservations/${updatedRes.reservation_id}/status`;
     const options = {
       method: 'PUT',
       headers,
@@ -130,8 +130,8 @@ export async function updateTable(reservation_id, table_id, signal) {
     return await fetchJson(url, options)
   }
 
-  export async function updateRes(reservation_id, signal) {
-    const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  export async function updateRes(updatedRes, signal) {
+    const url = `${API_BASE_URL}/reservations/${updatedRes.reservation_id}`;
     const options = {
       method: 'PUT',
       headers,
