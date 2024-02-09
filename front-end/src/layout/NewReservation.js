@@ -40,13 +40,13 @@ function NewReservation() {
 
 
    return (
-    <main>
-        <ReservationForm reservation={reservation}
-                        setReservation={setReservation}
-                        reservationError={reservationError}
-                        submitHandler={submitHandler} />
-</main>
-);
+        <main>
+            <ReservationForm reservation={reservation}
+                            setReservation={setReservation}
+                            reservationError={reservationError}
+                            submitHandler={submitHandler} />
+        </main>
+    );
 }
 
 export default NewReservation;

@@ -139,3 +139,8 @@ export async function updateTable(reservation_id, table_id, signal) {
     };
     return await fetchJson(url, options)
   }
+
+  export async function getRes(reservation_id, signal) {
+    const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+    return await fetchJson(url, { signal }, {});
+  }
