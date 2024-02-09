@@ -118,3 +118,24 @@ export async function updateTable(reservation_id, table_id, signal) {
     };
     return await fetchJson(url, options)
   }
+
+  export async function cancelStatus(reservation_id, signal) {
+    const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+    const options = {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({data: { status: "cancelled" } }),
+      signal,
+    };
+    return await fetchJson(url, options)
+  }
+
+  export async function updateRes(reservation_id, signal) {
+    const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+    const options = {
+      method: 'PUT',
+      headers,
+      signal,
+    };
+    return await fetchJson(url, options)
+  }
