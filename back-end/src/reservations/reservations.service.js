@@ -28,8 +28,11 @@ async function statusUpdate(reservationId, status) {
         .returning("*")
 }
 
-async function cancelStatusUpdate(reservationId) {
-    //how do i add an update for status: cancelled as a PUT request along the same route as another PUT request
+async function cancelledStatusUpdate(reservationId) {
+    return knex("reservations")
+        .where({"reservation_id": reservationId})
+        .update({status: "cancelled"})
+        .then((updatedRecords) => updatedRecords[0]);
 }
 
 function search(mobile_number) {
@@ -56,4 +59,5 @@ module.exports = {
     statusUpdate,
     search,
     resUpdate,
+    cancelledStatusUpdate,
 }

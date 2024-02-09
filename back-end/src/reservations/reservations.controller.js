@@ -159,6 +159,9 @@ function resStatusValidity(req, res, next) {
 async function statusUpdate(req, res, next) {
   const {reservation_id} = res.locals.reservation;
   const { data: { status }  = {} } = req.body;
+    if(status === "booked") {
+      await service.cancelledStatusUpdate(reservation_id)
+    }
     if(['booked', 'seated', 'finished', 'cancelled'].includes(status)) {
       await service.statusUpdate(reservation_id, status)
       res.status(200).json({ data: {status: status}});
