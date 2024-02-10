@@ -50,8 +50,7 @@ function EditReservation () {
             <ReservationForm reservation={reservation}
                             setReservation={setReservation}
                             reservationError={reservationError}
-                            submitHandler={submitHandler}
-                            loadReservation={loadReservation} />
+                            submitHandler={submitHandler} />
         </main>
     );
 };
