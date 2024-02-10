@@ -135,7 +135,7 @@ export async function updateTable(reservation_id, table_id, signal) {
     const options = {
       method: 'PUT',
       headers,
-      body: JSON.stringify(updatedRes),
+      body: JSON.stringify({data: updatedRes}),
       signal,
     };
     return await fetchJson(url, options, updatedRes)
@@ -145,7 +145,12 @@ export async function updateTable(reservation_id, table_id, signal) {
 
   export async function getRes(reservation_id, signal) {
     const url = `${API_BASE_URL}/reservations/${reservation_id}`;
-    return await fetchJson(url, { signal }, {})
+    try {
+    return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+    } catch(error) {
+      console.error("Error getting reservation", error.message)
+      throw error;
+    }
   }
