@@ -135,6 +135,7 @@ export async function updateTable(reservation_id, table_id, signal) {
     const options = {
       method: 'PUT',
       headers,
+      body: JSON.stringify(updatedRes),
       signal,
     };
     return await fetchJson(url, options, updatedRes)

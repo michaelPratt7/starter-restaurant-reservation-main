@@ -85,17 +85,15 @@ function Dashboard() {
 // Component for ReservationList
   const reservationList = reservations.map((reservation) => (
     <>
-    {reservation.status !== "finished" &&
       <ReservationList reservation = {reservation} />
-  }
-    {reservation.status === "seated" ? "" : 
-    <div className= "flex ml-2">
-    <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-    <button>Seat</button>
-  </Link>
-  </div>
-}
-</>
+      {reservation.status === "seated" ? "" : 
+        <div className= "flex ml-2">
+        <Link to={`/reservations/${reservation.reservation_id}/seat`}>
+        <button>Seat</button>
+        </Link>
+        </div>
+      }
+  </>
   ))
 
   
