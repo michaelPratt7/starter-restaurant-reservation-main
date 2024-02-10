@@ -7,6 +7,7 @@ function ReservationForm({
     setReservation,
     reservationError,
     submitHandler,
+    loadReservation,
 }) {
 
     const history = useHistory();

@@ -10,26 +10,38 @@ function EditReservation () {
     const [reservationError, setReservationError] = useState(null);
 
 
-    useEffect(() => {
+    useEffect(loadReservation, [reservation_id]);
+    
+    function loadReservation() {
         const abortController = new AbortController();
-        try {
-        async function getReservation(){
-            const res = await getRes(reservation_id, abortController.signal)
-            setReservation(res)
-        }
-        getReservation();
-    } catch(error) {
-        if (error.name !== "AbortError") {
-            setReservationError(error)
-        }
-    }
-        return () => abortController.abort
-    }, [reservation_id]);
+        setReservationError(null);
+        getRes(reservation_id, abortController.signal)
+          .then(setReservation)
+          .catch(setReservationError);
+        return () => abortController.abort();
+      };
+    
+      //useEffect(() => {
+      //  const abortController = new AbortController();
+      //  try {
+     //   async function getReservation(){
+      //      const res = await getRes(reservation_id, abortController.signal)
+      //      setReservation(res)
+      //  }
+      //  getReservation();
+  //  } catch(error) {
+    //    if (error.name !== "AbortError") {
+    //        setReservationError(error)
+    //    }
+  //  }
+  //      return () => abortController.abort
+   // }, [reservation_id]);
 
 
     async function submitHandler(event) {
         event.preventDefault();
         await updateRes(reservation);
+        loadReservation();
         history.goBack();
       };
 
@@ -38,7 +50,8 @@ function EditReservation () {
             <ReservationForm reservation={reservation}
                             setReservation={setReservation}
                             reservationError={reservationError}
-                            submitHandler={submitHandler} />
+                            submitHandler={submitHandler}
+                            loadReservation={loadReservation} />
         </main>
     );
 };
