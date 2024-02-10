@@ -30,8 +30,6 @@ const ReservationList = ({reservation}) => {
                 </Link>
                 <button data-reservation-id-cancel={reservation.reservation_id}
                   onClick={() => cancelHandler(reservation)}>Cancel</button>
-                 
-
       </div>
     )
 

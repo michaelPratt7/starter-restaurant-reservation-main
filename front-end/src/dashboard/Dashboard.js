@@ -115,6 +115,7 @@ function Dashboard() {
             <button onClick={() => handleButtonClick("next")}>Next</button>
           </div>
           <ErrorAlert error={reservationsError} />
+          <ErrorAlert error={tablesError} />
           {/* List of Reservations */}
           {reservationList}
         </div>

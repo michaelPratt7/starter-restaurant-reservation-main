@@ -27,8 +27,7 @@ function ReservationForm({
 
     return (
             <form onSubmit={submitHandler}>
-                <table>
-                    <td htmlFor="first_name">
+                    <label htmlFor="first_name">
                         First Name
                         <input
                         id="first_name"
@@ -37,8 +36,8 @@ function ReservationForm({
                         onChange={changeHandler}
                         value={reservation.first_name}
                         />
-                    </td>
-                    <td htmlFor="last_name">
+                    </label>
+                    <label htmlFor="last_name">
                         Last Name
                         <input
                         id="last_name"
@@ -47,8 +46,8 @@ function ReservationForm({
                         onChange={changeHandler}
                         value={reservation.last_name}
                         />
-                    </td>
-                    <td htmlFor="mobile_number">
+                    </label>
+                    <label htmlFor="mobile_number">
                         Mobile Number
                         <input
                         id="mobile_number"
@@ -57,8 +56,8 @@ function ReservationForm({
                         onChange={changeHandler}
                         value={reservation.mobile_number}
                         />
-                    </td>
-                    <td htmlFor="reservation_date">
+                    </label>
+                    <label htmlFor="reservation_date">
                         Reservation Date
                         <input
                         id="reservation_date"
@@ -67,8 +66,8 @@ function ReservationForm({
                         onChange={changeHandler}
                         value={reservation.reservation_date}
                         />
-                    </td>
-                    <td htmlFor="reservation_time">
+                    </label>
+                    <label htmlFor="reservation_time">
                         Reservation Time
                         <input
                         id="reservation_time"
@@ -77,8 +76,8 @@ function ReservationForm({
                         onChange={changeHandler}
                         value={reservation.reservation_time}
                         />
-                    </td>
-                    <td htmlFor="people">
+                    </label>
+                    <label htmlFor="people">
                         People
                         <input
                         id="people"
@@ -88,8 +87,7 @@ function ReservationForm({
                         onChange={numberChangeHandler}
                         value={reservation.people}
                         />
-                    </td>
-                </table>
+                    </label>
                 <div className="flex pt-2">
                 <ErrorAlert error={reservationError} />
             <button type="button" onClick={() => history.goBack()}>Cancel</button>
