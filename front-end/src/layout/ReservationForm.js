@@ -52,7 +52,8 @@ function ReservationForm({
                         <input
                         id="mobile_number"
                         name="mobile_number"
-                        type="text"
+                        type="tel"
+                        placeholder="Phone Number"
                         onChange={changeHandler}
                         value={reservation.mobile_number}
                         />
